@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserOperations {
-    public void registerUser(User user) throws SQLException {
+    public void registerUser(User user) {
         String query = "INSERT INTO users (username, password) VALUES (?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -13,10 +13,12 @@ public class UserOperations {
             preparedStatement.setString(2, user.getPassword()); // hash the password!
 
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public User loginUser(String username, String password) throws SQLException {
+    public int loginUser(String username, String password) {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -26,15 +28,13 @@ public class UserOperations {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return new User(
-                            resultSet.getInt("id"),
-                            resultSet.getString("username"),
-                            resultSet.getString("password")
-                    );
+                    return resultSet.getInt("id");
                 } else {
-                    return null;
+                    return -1;
                 }
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
