@@ -151,5 +151,10 @@ public class Main {
     }
 
     private static void deleteTask() throws SQLException {
+        System.out.print("Enter task ID to delete: ");
+        int id = scanner.nextInt();
+
+        taskOperations.deleteTask(id);
+        System.out.println("Task deleted successfully!");
     }
 }

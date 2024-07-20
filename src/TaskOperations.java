@@ -49,4 +49,17 @@ public class TaskOperations {
             throw new RuntimeException(e);
         }
     }
+
+    public void deleteTask(int id) {
+        String query = "DELETE FROM tasks WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
