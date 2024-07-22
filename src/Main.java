@@ -11,7 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            System.out.println("Welcome to the To-Do List Application");
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            System.out.println("     Welcome to the To-Do List Application     ");
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println("1. Register");
             System.out.println("2. Login");
@@ -43,9 +44,10 @@ public class Main {
         }
     }
 
-    private static void showMainmenu() {
+    private static void showMainMenu() {
         while (true) {
-            System.out.println("Main Menu");
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            System.out.println("                   Main Menu                   ");
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println("1. View Tasks");
             System.out.println("2. Add Task");
@@ -106,7 +108,7 @@ public class Main {
 
         if (currentUserId != -1) {
             System.out.println("Login successful!");
-            showMainmenu();
+            showMainMenu();
         } else {
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println("Invalid username or password. Please try again.");
@@ -121,16 +123,19 @@ public class Main {
         if (tasks.isEmpty()) {
             System.out.println("No tasks found for the current user.");
         } else {
-            System.out.println("Your tasks: ");
+            System.out.println("-----------------------------------------------");
+            System.out.println("Your tasks:");
 
             for (int i = 0; i < tasks.size(); i++) {
                 Task task = tasks.get(i);
 
-                System.out.println((i + 1) + ". Name: " + task.getName());
+                System.out.println((i + 1) + ". Id: " + task.getId());
+                System.out.println("   Name: " + task.getName());
                 System.out.println("   Description: " + task.getDescription());
                 System.out.println("   Status: " + task.getStatus());
                 System.out.println("   Created At: " + task.getCreatedAt());
             }
+            System.out.println("-----------------------------------------------");
         }
     }
 
@@ -148,6 +153,24 @@ public class Main {
     }
 
     private static void updateTask() throws SQLException {
+        System.out.print("Enter task ID to update: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("If you don't want to change it, leave it blank.");
+
+        System.out.print("Enter new task title: ");
+        String newName = scanner.nextLine();
+        System.out.print("Enter new task description: ");
+        String newDescription = scanner.nextLine();
+        System.out.print("Enter new task status (Completed or Not Completed): ");
+        String newStatus = scanner.nextLine();
+
+        Task newTask = new Task(newName, newDescription, newStatus, new Timestamp(System.currentTimeMillis()));
+
+        taskOperations.updateTask(newTask, id);
+
+        System.out.println("Task updated successfully!");
     }
 
     private static void deleteTask() throws SQLException {

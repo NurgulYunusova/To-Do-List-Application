@@ -17,6 +17,13 @@ public class Task {
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
+    public Task(String name, String description, String status, Timestamp createdAt) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+    }
+
     public int getId() {
         return id;
     }

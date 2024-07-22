@@ -62,4 +62,50 @@ public class TaskOperations {
             throw new RuntimeException(e);
         }
     }
+
+    public void updateTask(Task task, int id) {
+        StringBuilder query = new StringBuilder("UPDATE tasks SET ");
+        boolean first = true;
+
+        if (task.getName() != null && !task.getName().isEmpty()) {
+            query.append("name = ?");
+            first = false;
+        }
+
+        if (task.getDescription() != null && !task.getDescription().isEmpty()) {
+            if (!first) query.append(", ");
+            query.append("description = ?");
+            first = false;
+        }
+
+        if (task.getStatus() != null && !task.getStatus().isEmpty()) {
+            if (!first) query.append(", ");
+            query.append("status = ?");
+        }
+
+        query.append(" WHERE id = ?");
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
+            int paramIndex = 1;
+
+            if (task.getName() != null && !task.getName().isEmpty()) {
+                preparedStatement.setString(paramIndex++, task.getName());
+            }
+
+            if (task.getDescription() != null && !task.getDescription().isEmpty()) {
+                preparedStatement.setString(paramIndex++, task.getDescription());
+            }
+
+            if (task.getStatus() != null && !task.getStatus().isEmpty()) {
+                preparedStatement.setString(paramIndex++, task.getStatus());
+            }
+
+            preparedStatement.setInt(paramIndex, task.getId());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
