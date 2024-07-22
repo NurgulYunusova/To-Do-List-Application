@@ -10,6 +10,10 @@ public class Main {
     private static int currentUserId;
 
     public static void main(String[] args) {
+        showFirstMenu();
+    }
+
+    private static void showFirstMenu() {
         while (true) {
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println("     Welcome to the To-Do List Application     ");
@@ -76,13 +80,16 @@ public class Main {
                         break;
                     case 5:
                         System.out.println("Logging out...");
-                        System.exit(0);
+                        Thread.sleep(1000);
+                        showFirstMenu();
                         break;
                     default:
                         System.out.println("Invalid choice. Please try again.");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
