@@ -163,8 +163,20 @@ public class Main {
         String newName = scanner.nextLine();
         System.out.print("Enter new task description: ");
         String newDescription = scanner.nextLine();
-        System.out.print("Enter new task status (Completed or Not Completed): ");
-        String newStatus = scanner.nextLine();
+
+        String newStatus;
+
+        while (true) {
+            System.out.print("Enter new task status (Completed or Not Completed): ");
+            newStatus = scanner.nextLine();
+
+            if (newStatus.isEmpty() || newStatus.equals("Completed") || newStatus.equals("Not Completed")) {
+                break;
+            } else {
+                System.out.println("Invalid status. Please enter 'Completed' or 'Not Completed', or leave it blank.");
+            }
+        }
+
 
         Task newTask = new Task(newName, newDescription, newStatus, new Timestamp(System.currentTimeMillis()));
 

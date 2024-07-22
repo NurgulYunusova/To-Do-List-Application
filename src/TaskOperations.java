@@ -83,6 +83,10 @@ public class TaskOperations {
             query.append("status = ?");
         }
 
+
+        if (!first) query.append(", ");
+        query.append("created_at = ?");
+
         query.append(" WHERE id = ?");
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -101,7 +105,9 @@ public class TaskOperations {
                 preparedStatement.setString(paramIndex++, task.getStatus());
             }
 
-            preparedStatement.setInt(paramIndex, task.getId());
+            preparedStatement.setTimestamp(paramIndex++, task.getCreatedAt());
+
+            preparedStatement.setInt(paramIndex, id);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
